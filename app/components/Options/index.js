@@ -1,19 +1,37 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
-class SimpleMenu extends React.Component {
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+});
+
+class OptionsMenu extends React.Component {
   constructor(props) {
     super(props);
+    this.button = null;
     this.state = {
       anchorEl: null,
+      selectedIndex: 1,
     };
   }
 
-  handleClick = event => {
-    console.log('key', this.props.serial, event.currentTarget);
+  handleClickListItem = event => {
     this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuItemClick = (event, index, option) => {
+    this.props.onSelectAnswer(this.props.serial, option);
+    this.setState({ selectedIndex: index, anchorEl: null });
   };
 
   handleClose = () => {
@@ -21,33 +39,47 @@ class SimpleMenu extends React.Component {
   };
 
   render() {
+    const { classes, options } = this.props;
     const { anchorEl } = this.state;
 
     return (
-      <div>
-        <Button
-          aria-owns={anchorEl ? 'simple-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
-          Open Menu
-        </Button>
+      <div className={classes.root}>
+        <List component="nav">
+          <ListItem
+            button={this.button}
+            aria-haspopup="true"
+            aria-controls="lock-menu"
+            aria-label="When device is locked"
+            onClick={this.handleClickListItem}
+          >
+            <ListItemText
+              secondary={options[this.state.selectedIndex]}
+            />
+          </ListItem>
+        </List>
         <Menu
-          id="simple-menu"
+          id="lock-menu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
-        > 
-         {
-           this.props.options && this.props.options.length > 0 &&
-           this.props.options.map((option) => (
-             <MenuItem onClick={this.handleClose} key={option}>{option}</MenuItem>
-           ))
-         }
+        >
+          {options.map((option, index) => (
+            <MenuItem
+              key={option}
+              selected={index === this.state.selectedIndex}
+              onClick={event => this.handleMenuItemClick(event, index, option)}
+            >
+              {option}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     );
   }
 }
 
-export default SimpleMenu;
+OptionsMenu.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(OptionsMenu);
