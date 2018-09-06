@@ -27,6 +27,9 @@ const Question = ({
   <Card className={classes[status || 'card']}>
     <CardContent>
       <Typography variant="headline">{question}</Typography>
+      <Typography variant="subheading" gutterBottom style={{ color: '#4a4a4ade' }}>
+        {status == 'unAnswered' ? '(*unanswered)' : ''}
+      </Typography>
       <Options
         options={options}
         onSelectAnswer={onSelectAnswer}

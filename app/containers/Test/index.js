@@ -27,6 +27,7 @@ export class Test extends React.PureComponent {
   onSelectAnswer(key, answer) {
     this.props.setAnswer(key, answer);
     this.incorrect = 0;
+    this.showGraph = false;
   }
 
   onSubmit() {
@@ -47,6 +48,7 @@ export class Test extends React.PureComponent {
         this.incorrect += 1;
       }
     }
+    this.showGraph = true;
   }
 
   onClear() {
@@ -54,6 +56,7 @@ export class Test extends React.PureComponent {
     setAnswer(1, '');
     setAnswer(2, '');
     setAnswer(3, '');
+    this.showGraph = false;
   }
 
   render() {
@@ -104,15 +107,17 @@ export class Test extends React.PureComponent {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <BarChart
-            ylabel="Number"
-            width={300}
-            height={500}
-            margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
-            data={barData}
-            onBarClick={this.handleBarClick}
-          />
+        <Grid item xs={12} lg={6} style={{ marginTop: 15 }}>
+          {
+            this.showGraph && 
+              <BarChart
+                ylabel="Number"
+                width={300}
+                height={500}
+                margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+                data={barData}
+              />
+            }
         </Grid>
       </Grid>
     );
