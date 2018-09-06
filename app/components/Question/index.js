@@ -7,21 +7,26 @@ import Options from '../Options';
 
 const styles = {
   card: {
-    minWidth: 275
+    minWidth: 275,
   },
   unAnswered: {
-    border: 'solid 1px green'
+    border: 'solid 1px yellow',
   },
   wrong: {
-    border: 'solid 1px red'
-  }
-}
-const Question = ({ question, options, status, classes, serial, onSelectAnswer }) => (
+    border: 'solid 1px red',
+  },
+};
+const Question = ({
+  question,
+  options,
+  status,
+  classes,
+  serial,
+  onSelectAnswer,
+}) => (
   <Card className={classes[status || 'card']}>
     <CardContent>
-      <Typography variant="headline">
-        {question}
-      </Typography>
+      <Typography variant="headline">{question}</Typography>
       <Options
         options={options}
         onSelectAnswer={onSelectAnswer}

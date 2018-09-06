@@ -7,7 +7,6 @@ export const initialState = fromJS({
   1: '',
   2: '',
   3: '',
-  4: ''
 });
 
 function testReducer(state = initialState, action) {
